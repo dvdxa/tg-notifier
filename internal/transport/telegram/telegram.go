@@ -9,20 +9,18 @@ import (
 	"github.com/rs/zerolog/log"
 
 	domainbot "github.com/dvdxa/tg-notifier/internal/domain/bot"
-
-	"github.com/dvdxa/tg-notifier/internal/usecase/bot"
 )
 
 type Handler struct {
 	bot *tgbotapi.BotAPI
-	u   *bot.Usecase
+	bu  botUsecase
 	log zerolog.Logger
 }
 
-func NewHandler(bot *tgbotapi.BotAPI, u *bot.Usecase, log zerolog.Logger) *Handler {
+func NewHandler(bot *tgbotapi.BotAPI, bu botUsecase, log zerolog.Logger) *Handler {
 	return &Handler{
 		bot: bot,
-		u:   u,
+		bu:  bu,
 		log: log.With().Str("pkg", "telegram").Logger(),
 	}
 }
@@ -53,7 +51,7 @@ func (h *Handler) Run(ctx context.Context) (err error) {
 			cmd := domainbot.Command(msg.Command())
 
 			var res domainbot.Result
-			res, err = h.u.HandleCommand(ctx, cmd)
+			res, err = h.bu.HandleCommand(ctx, cmd)
 			if err != nil {
 				// TODO: do we need to send errs to chan?
 				log.Err(err).Msg("failed to handle command")

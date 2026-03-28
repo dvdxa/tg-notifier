@@ -11,11 +11,11 @@ import (
 )
 
 type Usecase struct {
-	sender ExternalSender
+	sender externalSender
 	log    zerolog.Logger
 }
 
-func NewUsecase(log zerolog.Logger, sender ExternalSender) *Usecase {
+func NewUsecase(log zerolog.Logger, sender externalSender) *Usecase {
 	return &Usecase{
 		sender: sender,
 		log:    log,

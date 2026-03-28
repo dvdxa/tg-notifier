@@ -6,6 +6,6 @@ import (
 	"github.com/dvdxa/tg-notifier/internal/domain/bot"
 )
 
-type ExternalSender interface {
+type externalSender interface {
 	Send(ctx context.Context, cmd bot.Command) (statusCode int, err error)
 }
